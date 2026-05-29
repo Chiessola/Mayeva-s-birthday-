@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joyeux Anniversaire Ma tomate 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #d4a853;
+    --gold-light: #f0c878;
+    --gold-dark: #a0742a;
+    --rose: #e8647a;
+    --rose-light: #f9a8b8;
+    --deep: #1a0a1e;
+    --purple: #2d1040;
+    --cream: #fdf6ec;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--deep);
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ── CUSTOM CURSOR ── */
+  .cursor {
+    position: fixed; width: 12px; height: 12px;
+    background: var(--gold); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: transform .15s, width .15s, height .15s, opacity .15s;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed; width: 36px; height: 36px;
+    border: 1.5px solid var(--gold-light); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: transform .4s cubic-bezier(.175,.885,.32,1.275), opacity .3s;
+    opacity: .6;
+  }
+
+  /* ── PARTICLES ── */
+  #particles-canvas {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 2rem;
+    overflow: hidden; z-index: 1;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, #3a1560 0%, #1a0a1e 70%);
+    z-index: -1;
+  }
+
+  .hero-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4a853' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .floating-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(212,168,83,.15);
+    animation: ringPulse 6s ease-in-out infinite;
+  }
+  .floating-ring:nth-child(1) { width: 600px; height: 600px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: 0s; }
+  .floating-ring:nth-child(2) { width: 900px; height: 900px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: 1.5s; }
+  .floating-ring:nth-child(3) { width: 1200px; height: 1200px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: 3s; }
+
+  @keyframes ringPulse {
+    0%, 100% { opacity: .15; transform: translate(-50%,-50%) scale(1); }
+    50% { opacity: .35; transform: translate(-50%,-50%) scale(1.04); }
+  }
+
+  .hero-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(.75rem, 2vw, .9rem);
+    letter-spacing: .4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp .8s .3s forwards;
+  }
+
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 8vw, 7rem);
+    font-weight: 900;
+    line-height: 1.05;
+    background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 40%, var(--rose) 70%, var(--gold-light) 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: fadeUp .9s .6s forwards, shimmer 4s 2s ease-in-out infinite;
+    opacity: 0;
+    text-shadow: none;
+  }
+
+  @keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .hero-subtitle {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.4rem, 4vw, 2.6rem);
+    color: var(--rose-light);
+    margin: 1rem 0 2rem;
+    opacity: 0;
+    animation: fadeUp .9s .9s forwards;
+  }
+
+  .hero-date {
+    font-size: clamp(.8rem, 2vw, 1rem);
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.5);
+    opacity: 0;
+    animation: fadeUp .9s 1.2s forwards;
+  }
+
+  .scroll-hint {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: .5rem;
+    opacity: 0; animation: fadeUp .9s 2s forwards;
+  }
+  .scroll-hint span { font-size: .7rem; letter-spacing: .3em; color: rgba(212,168,83,.6); text-transform: uppercase; }
+  .scroll-line { width: 1px; height: 50px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollLine 2s ease-in-out infinite; }
+  @keyframes scrollLine { 0%,100%{transform:scaleY(1);opacity:.6} 50%{transform:scaleY(.4);opacity:1} }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTION SHARED ── */
+  section { position: relative; z-index: 1; padding: 6rem 2rem; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-size: .8rem; letter-spacing: .4em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .section-label::before, .section-label::after {
+    content: ''; flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--gold-dark));
+  }
+  .section-label::after { background: linear-gradient(to left, transparent, var(--gold-dark)); }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 700; line-height: 1.1;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #fff 0%, var(--gold-light) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .section-text {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    line-height: 1.9;
+    color: rgba(253,246,236,.75);
+    max-width: 700px;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+    padding: 1rem 0; opacity: .35;
+  }
+  .divider-line { flex: 1; max-width: 200px; height: 1px; background: var(--gold); }
+  .divider-diamond { width: 8px; height: 8px; background: var(--gold); transform: rotate(45deg); }
+
+  /* ── PHOTO GALLERY ── */
+  .gallery-section { background: linear-gradient(180deg, var(--deep) 0%, var(--purple) 50%, var(--deep) 100%); }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .gallery-item {
+    position: relative; overflow: hidden; border-radius: 4px;
+    aspect-ratio: 3/4;
+    cursor: pointer;
+    transform: translateY(40px); opacity: 0;
+    transition: transform .6s cubic-bezier(.215,.61,.355,1), opacity .6s;
+  }
+  .gallery-item.visible { transform: translateY(0); opacity: 1; }
+  .gallery-item:nth-child(even) { margin-top: 2rem; }
+
+  .gallery-item img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform .6s cubic-bezier(.215,.61,.355,1), filter .4s;
+    filter: saturate(.9) brightness(.95);
+  }
+  .gallery-item:hover img { transform: scale(1.06); filter: saturate(1.1) brightness(1.05); }
+
+  .gallery-item::before {
+    content: ''; position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(to top, rgba(26,10,30,.8) 0%, transparent 50%);
+    opacity: 0; transition: opacity .4s;
+  }
+  .gallery-item:hover::before { opacity: 1; }
+
+  .gallery-item-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
+    padding: 1.5rem 1rem 1rem;
+    transform: translateY(20px); opacity: 0;
+    transition: transform .4s, opacity .4s;
+  }
+  .gallery-item:hover .gallery-item-overlay { transform: translateY(0); opacity: 1; }
+  .gallery-item-overlay span {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.2rem; color: var(--gold-light);
+  }
+
+  .gallery-frame {
+    position: absolute; inset: 8px; border: 1px solid rgba(212,168,83,.2); z-index: 3;
+    pointer-events: none; transition: border-color .4s;
+  }
+  .gallery-item:hover .gallery-frame { border-color: rgba(212,168,83,.5); }
+
+  /* ── FEATURED PHOTO ── */
+  .featured-section {
+    background: var(--purple);
+    display: flex; align-items: center;
+  }
+  .featured-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem; align-items: center;
+  }
+  @media (max-width: 768px) { .featured-inner { grid-template-columns: 1fr; } }
+
+  .featured-photo {
+    position: relative;
+    aspect-ratio: 3/4;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,.5);
+  }
+  .featured-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .featured-photo::after {
+    content: ''; position: absolute; inset: 0;
+    border: 1px solid rgba(212,168,83,.3);
+    border-radius: 8px;
+  }
+  .featured-photo-frame {
+    position: absolute; inset: 12px;
+    border: 1px solid rgba(212,168,83,.15);
+    border-radius: 4px; pointer-events: none;
+  }
+
+  .featured-accent {
+    position: absolute; bottom: -20px; right: -20px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--gold-dark) 0%, transparent 70%);
+    filter: blur(20px); opacity: .6;
+  }
+
+  .featured-content { padding: 2rem 0; }
+  .featured-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-style: italic; line-height: 1.4;
+    color: var(--cream); margin: 1.5rem 0;
+  }
+  .featured-quote em { color: var(--gold); font-style: normal; }
+
+  /* ── MEMORIES TIMELINE ── */
+  .timeline {
+    position: relative; padding: 3rem 0;
+  }
+  .timeline::before {
+    content: ''; position: absolute; left: 50%; top: 0; bottom: 0;
+    width: 1px; background: linear-gradient(to bottom, transparent, var(--gold-dark) 20%, var(--gold-dark) 80%, transparent);
+    transform: translateX(-50%);
+  }
+  @media (max-width: 768px) {
+    .timeline::before { left: 20px; }
+  }
+
+  .timeline-item {
+    display: flex; align-items: flex-start; gap: 3rem;
+    margin-bottom: 4rem; position: relative;
+    opacity: 0; transform: translateX(-30px);
+    transition: opacity .6s, transform .6s;
+  }
+  .timeline-item.visible { opacity: 1; transform: translateX(0); }
+  .timeline-item:nth-child(even) { flex-direction: row-reverse; transform: translateX(30px); }
+  .timeline-item:nth-child(even).visible { transform: translateX(0); }
+
+  @media (max-width: 768px) {
+    .timeline-item, .timeline-item:nth-child(even) { flex-direction: row; padding-left: 50px; }
+    .timeline::before { left: 20px; }
+  }
+
+  .timeline-dot {
+    position: absolute; left: 50%; top: 10px;
+    width: 14px; height: 14px; background: var(--gold); border-radius: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 0 4px rgba(212,168,83,.2), 0 0 20px var(--gold);
+  }
+  @media (max-width: 768px) { .timeline-dot { left: 14px; } }
+
+  .timeline-content { flex: 1; }
+  .timeline-year {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 700; color: var(--gold);
+    margin-bottom: .5rem;
+  }
+  .timeline-text { line-height: 1.8; color: rgba(253,246,236,.75); font-size: 1.05rem; }
+
+  /* ── MESSAGE ── */
+  .message-section {
+    text-align: center;
+    background: radial-gradient(ellipse 80% 80% at 50% 50%, #2d1040 0%, var(--deep) 100%);
+  }
+  .message-card {
+    max-width: 800px; margin: 0 auto;
+    padding: 4rem;
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(212,168,83,.2);
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .message-card::before {
+    content: '"';
+    position: absolute; top: -2rem; left: 2rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 12rem; color: rgba(212,168,83,.06);
+    line-height: 1;
+  }
+  .message-text {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    line-height: 1.7;
+    color: var(--cream);
+    position: relative; z-index: 1;
+  }
+  .message-signature {
+    margin-top: 2rem;
+    font-size: .9rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* ── CONFETTI BURST ── */
+  .confetti-container {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 100; overflow: hidden;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center; padding: 3rem 2rem;
+    background: var(--deep);
+    border-top: 1px solid rgba(212,168,83,.1);
+    position: relative; z-index: 1;
+  }
+  footer .footer-heart {
+    font-size: 2rem; display: block; margin-bottom: 1rem;
+    animation: heartbeat 1.5s ease-in-out infinite;
+  }
+  @keyframes heartbeat { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
+  footer p { font-size: .85rem; letter-spacing: .2em; color: rgba(212,168,83,.5); text-transform: uppercase; }
+
+  /* ── LIGHTBOX ── */
+  .lightbox {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,.95);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity .4s;
+  }
+  .lightbox.active { opacity: 1; pointer-events: all; }
+  .lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 4px; }
+  .lightbox-close {
+    position: absolute; top: 2rem; right: 2rem;
+    background: none; border: 1px solid rgba(255,255,255,.3);
+    color: #fff; font-size: 1.5rem; padding: .5rem 1rem;
+    cursor: pointer; border-radius: 4px; font-family: inherit;
+    transition: border-color .3s;
+  }
+  .lightbox-close:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── RESPONSIVE TWEAKS ── */
+  @media (max-width: 600px) {
+    .message-card { padding: 2rem 1.5rem; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; gap: .8rem; }
+    .gallery-item:nth-child(even) { margin-top: 0; }
+    section { padding: 4rem 1.2rem; }
+  }
+
+  /* ── REVEAL ON SCROLL ── */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s, transform .7s; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Particle canvas -->
+<canvas id="particles-canvas"></canvas>
+
+<!-- Confetti -->
+<div class="confetti-container" id="confettiContainer"></div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="closeLightbox()">✕ Fermer</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="floating-ring"></div>
+    <div class="floating-ring"></div>
+    <div class="floating-ring"></div>
+  </div>
+  <p class="hero-label">✦ Une journée très spéciale ✦</p>
+  <h1 class="hero-name">Bodie Kouam<br>Mayeva</h1>
+  <p class="hero-subtitle">Joyeux Anniversaire, ma belle 🎂</p>
+  <p class="hero-date">ISM · Depuis 2020 · Jusqu'a nos jours</p>
+  <div class="scroll-hint">
+    <span>Découvrir</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ── FEATURED ── -->
+<section class="featured-section">
+  <div class="section-inner featured-inner">
+    <div class="featured-photo reveal">
+      <img src="/mnt/user-data/uploads/1000007356.jpg" alt="Mayeva" onerror="this.src='https://via.placeholder.com/400x530/2d1040/d4a853?text=Mayeva'">
+      <div class="featured-photo-frame"></div>
+      <div class="featured-accent"></div>
+    </div>
+    <div class="featured-content reveal" style="transition-delay:.2s">
+      <p class="section-label">Notre histoire</p>
+      <h2 class="section-title">Une amitié<br>précieuse</h2>
+      <blockquote class="featured-quote">
+        « Depuis l'<em>IUG</em>, tu as toujours garder ce grands  <em>sourire</em> et cette <em>joie</em> de vivre.  »
+      </blockquote>
+      <p class="section-text">
+        Depuis que nos chemins se sont croisés , tu es devenue bien plus qu'une amie de fac a mes yeux. Tu es une présence lumineuse, drôle, et sincère que je chéris profondément. Aujourd'hui, c'est ton jour — et tu mérites tout l'amour du monde ! 💛
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ── GALLERY ── -->
+<section class="gallery-section">
+  <div class="section-inner">
+    <p class="section-label reveal">Galerie Souvenirs</p>
+    <h2 class="section-title reveal">ton plus beaux<br>sourire qui ma marquée</h2>
+
+    <div class="gallery-grid" id="galleryGrid">
+      <!-- Photos injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ── TIMELINE ── -->
+<section style="background:var(--deep)">
+  <div class="section-inner">
+    <p class="section-label reveal" style="justify-content:center;text-align:center">Notre parcours</p>
+    <div class="divider reveal"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-year">2020</div>
+          <p class="timeline-text">Le début d'une belle aventure à l'IUG. Deux étudiantes, un campus, et une amitié qui naît entre les cours et les fous-rires. Ce n'était que le début… ✨</p>
+        </div>
+        <div class="timeline-content"></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content"></div>
+        <div class="timeline-content">
+          <div class="timeline-year">2021 — 2022</div>
+          <p class="timeline-text">Des années de complicité, de révisions tardives, de sorties mémorables. Tu as prouvé que tu étais là dans les moments importants, toujours avec ce grand sourire. 😊</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-year">2023 — 2024</div>
+          <p class="timeline-text">Nos chemins continuent, nos liens grandissent. Peu importe la distance ou les défis, l'amitié que nous partageons reste inébranlable. Merci d'être toi ! 🌸</p>
+        </div>
+        <div class="timeline-content"></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content"></div>
+        <div class="timeline-content">
+          <div class="timeline-year">Aujourd'hui</div>
+          <p class="timeline-text">Un anniversaire pour célébrer une femme extraordinaire. Que cette journée soit à la hauteur de ce que tu es — magnifique, forte, et rayonnante. Bon anniversaire Mayeva ! 🎉</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MESSAGE ── -->
+<section class="message-section">
+  <div class="section-inner" style="text-align:center">
+    <p class="section-label reveal">Message du cœur</p>
+    <div class="message-card reveal" style="transition-delay:.2s">
+      <p class="message-text">
+        Chère Mayeva,<br><br>
+        En ce jour si spécial, je veux que tu saches combien tu comptes pour moi. 
+        Tu mérites tout le bonheur du monde, tous tes rêves, 
+        et toutes les étoiles que le ciel peut offrir. 
+        Que cette nouvelle année de ta vie soit la plus belle jamais vécue ! 🌟
+      </p>
+      <p class="message-signature">— Avec tout mon amour, ton admirateur secret 💛</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <span class="footer-heart">💛</span>
+  <p>Bon Anniversaire Bodie Kouam Mayeva · </p>
+</footer>
+
+<script>
+// ── CURSOR ──
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx=0, my=0, rx=0, ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; });
+(function animate(){ rx+=(mx-rx)*.12; ry+=(my-ry)*.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animate); })();
+
+// ── PARTICLES ──
+const canvas = document.getElementById('particles-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+function resize(){ W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
+
+class Particle {
+  constructor(){
+    this.x = Math.random()*W; this.y = Math.random()*H;
+    this.r = Math.random()*1.5+.3;
+    this.vx = (Math.random()-.5)*.3; this.vy = (Math.random()-.5)*.3;
+    this.alpha = Math.random()*.6+.1;
+    this.color = Math.random()<.5 ? '#d4a853' : '#e8647a';
+  }
+  update(){ this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>W)this.vx*=-1; if(this.y<0||this.y>H)this.vy*=-1; }
+  draw(){ ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fillStyle=this.color; ctx.globalAlpha=this.alpha; ctx.fill(); }
+}
+for(let i=0;i<120;i++) particles.push(new Particle());
+function animParticles(){ ctx.clearRect(0,0,W,H); particles.forEach(p=>{p.update();p.draw();}); ctx.globalAlpha=1; requestAnimationFrame(animParticles); }
+animParticles();
+
+// ── GALLERY ──
+const photos = [
+  '1.jpeg',
+  '2.jpeg',
+  '3.jpeg',
+  '4.jpeg',
+  '5.jpeg',
+  '6.jpeg',
+  '7.jpeg',
+  
+];
+const captions = ['Rayonnante ✨','Magnifique 💛','Belle âme 🌸','Souriante 😊','Élégante 💫','Précieuse 🌟','Joyeuse 🎉','Gracieuse 🌺','Lumineuse ✨','Unique 💎','Incroyable 🌙','Extraordinaire 💛'];
+const grid = document.getElementById('galleryGrid');
+photos.forEach((src, i) => {
+  const item = document.createElement('div');
+  item.className = 'gallery-item';
+  item.innerHTML = `
+    <img src="${src}" alt="Mayeva ${i+1}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x400/2d1040/d4a853?text=Mayeva'">
+    <div class="gallery-frame"></div>
+    <div class="gallery-item-overlay"><span>${captions[i]}</span></div>
+  `;
+  item.addEventListener('click', () => openLightbox(src));
+  grid.appendChild(item);
+});
+
+// ── LIGHTBOX ──
+function openLightbox(src){ document.getElementById('lightboxImg').src=src; document.getElementById('lightbox').classList.add('active'); }
+function closeLightbox(){ document.getElementById('lightbox').classList.remove('active'); }
+document.getElementById('lightbox').addEventListener('click', e => { if(e.target===e.currentTarget) closeLightbox(); });
+
+// ── SCROLL REVEAL ──
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); } });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal, .gallery-item, .timeline-item').forEach(el => obs.observe(el));
+
+// ── CONFETTI ──
+function launchConfetti(){
+  const container = document.getElementById('confettiContainer');
+  const colors = ['#d4a853','#e8647a','#f0c878','#f9a8b8','#ffffff','#a0742a'];
+  for(let i=0;i<80;i++){
+    const el = document.createElement('div');
+    const size = Math.random()*8+4;
+    el.style.cssText = `
+      position:absolute; width:${size}px; height:${size}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      left:${Math.random()*100}%; top:-20px;
+      border-radius:${Math.random()>.5?'50%':'2px'};
+      opacity:${Math.random()*.7+.3};
+      animation: confettiFall ${Math.random()*3+2}s ${Math.random()*2}s linear forwards;
+      transform:rotate(${Math.random()*360}deg);
+    `;
+    container.appendChild(el);
+  }
+  setTimeout(()=>container.innerHTML='', 8000);
+}
+
+// Inject confetti keyframes
+const style = document.createElement('style');
+style.textContent = `
+@keyframes confettiFall {
+  to { transform: translateY(110vh) rotate(720deg); opacity:0; }
+}`;
+document.head.appendChild(style);
+
+// Launch on load + every 12s
+window.addEventListener('load', () => { setTimeout(launchConfetti, 1500); });
+setInterval(launchConfetti, 12000);
+</script>
+</body>
+</html>
